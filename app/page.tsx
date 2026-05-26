@@ -10,8 +10,10 @@ type Chocolate = {
   ingredients: string;
   photo_urls: string[];
 };
-const backendAPIURI = "https://chocolate-backend-wo4m.onrender.com/";
-const basePhotoUrl = "https://chocolate-backend-wo4m.onrender.com/";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
+
+const backendAPIURI = API_URL + "/";
+const basePhotoUrl = API_URL + "/";
 
 async function getChocolates(): Promise<Chocolate[]> {
   try {

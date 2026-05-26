@@ -4,6 +4,9 @@ import ChocolateGrid from "./components/ChocolateGrid";
 import CallToActionSection from "./components/CallToActionSection";
 import Footer from "./components/Footer";
 
+export const dynamic = 'force-dynamic';
+
+
 type Chocolate = {
   id: number;
   name: string;

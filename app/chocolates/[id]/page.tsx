@@ -13,7 +13,9 @@ type Chocolate = {
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 async function getChocolate(id: string): Promise<Chocolate | null> {
+  console.log("Fetching:", `${API}/chocolates/${id}`); 
   try {
+    
     const res = await fetch(`${API}/chocolates/${id}`, {
       cache: "no-store",
     });

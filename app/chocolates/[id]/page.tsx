@@ -2,7 +2,8 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import VariantSelector from "../../components/VariantSelector";
 
-const API = "http://localhost:3000";
+const API = "https://chocolate-backend-wo4m.onrender.com/";
+
 
 type Chocolate = {
   id: number;

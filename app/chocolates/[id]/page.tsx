@@ -38,11 +38,12 @@ async function getVariants(id: string): Promise<Variant[]> {
   } catch { return []; }
 }
 
-export default async function ChocolateDetailPage({
-  params,
-}: {
+type Props = {
   params: { id: string };
-}) {
+};
+
+export default async function ChocolateDetailPage({ params }: Props) 
+{
   const [chocolate, variants] = await Promise.all([
     getChocolate(params.id),
     getVariants(params.id),

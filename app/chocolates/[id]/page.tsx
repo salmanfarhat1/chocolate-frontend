@@ -42,11 +42,13 @@ async function getVariants(id: string): Promise<Variant[]> {
 }
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: {
+    id: string;
+  };
 };
 
 export default async function ChocolateDetailPage({ params }: Props) {
-  const { id } = await params;
+  const id = params.id;
 
   const [chocolate, variants] = await Promise.all([
     getChocolate(id),

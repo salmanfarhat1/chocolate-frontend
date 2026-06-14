@@ -9,13 +9,13 @@ export default function Footer() {
       <div style={{
         maxWidth: "1200px",
         margin: "0 auto",
-        padding: "64px 32px 40px",
+        padding: "40px 16px 32px",
         fontFamily: "'Georgia', 'Times New Roman', serif"
       }}>
 
         <div style={{
           display: "grid",
-          gridTemplateColumns: "2fr 1fr 1fr 1fr",
+          gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
           gap: "48px",
           marginBottom: "56px"
         }}>

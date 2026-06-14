@@ -1,8 +1,9 @@
 "use client";
+import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer style={{ background: "linear-gradient(to bottom, #48260D, #1e0d0b)", color: "#c8a97e"}}>
+    <footer id="footer" style={{ background: "linear-gradient(to bottom, #48260D, #1e0d0b)", color: "#c8a97e"}}>
       <div style={{ height: "2px", background: "linear-gradient(to right, transparent, #c8a97e, transparent)" }} />
 
       <div style={{
@@ -46,30 +47,35 @@ export default function Footer() {
               maxWidth: "260px",
               margin: "0 0 24px"
             }}>
-              Handcrafted confections made with the finest single-origin cacao. Every piece tells a story of care, tradition, and artistry.
+            Hey, it's me doing artisinal chocolate based on you customized choices. 
             </p>
             <div style={{ display: "flex", gap: "12px" }}>
-              {[["I", "Instagram"], ["F", "Facebook"], ["P", "Pinterest"]].map(([letter, platform]) => (
-                <a key={platform} href="#" title={platform} style={{
-                  width: "36px",
-                  height: "36px",
-                  border: "1px solid #5a3528",
-                  borderRadius: "50%",
+            {[
+              { platform: "Instagram", href: "https://www.instagram.com/salmanfarhat_/", icon: "📷" },
+              { platform: "YouTube",   href: "https://www.youtube.com/@Salman_in_The_Mold", icon: "▶️" },
+            ].map(({ platform, href, icon }) => (
+              <a key={platform} href={href} title={platform} target="_blank" rel="noopener noreferrer"
+                style={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
+                  gap: "8px",
+                  padding: "8px 14px",
+                  border: "1px solid #5a3528",
+                  borderRadius: "20px",
                   fontSize: "13px",
                   fontWeight: "600",
                   textDecoration: "none",
                   fontFamily: "sans-serif",
+                  color: "#c8a97e",
                   transition: "all 0.2s ease"
                 }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "#c8a97e"; e.currentTarget.style.color = "#1e0d0b"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#c8a97e"; }}
-                >
-                  {letter}
-                </a>
-              ))}
+                onMouseEnter={e => { e.currentTarget.style.background = "#c8a97e"; e.currentTarget.style.color = "#1e0d0b"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#c8a97e"; }}
+              >
+                <span>{icon}</span>
+                <span>{platform}</span>
+              </a>
+            ))}
             </div>
           </div>
 
@@ -79,7 +85,7 @@ export default function Footer() {
               Collections
             </h4>
             <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-              {["Signature Truffles", "Single Origin", "Seasonal Gifting", "Bespoke Orders", "Corporate Gifts"].map(item => (
+              {["Ready-Made Collections", "Customize yours"].map(item => (
                 <li key={item} style={{ marginBottom: "12px" }}>
                   <a href="#" style={{ color: "#9a7060", fontSize: "14px", textDecoration: "none", transition: "color 0.2s" }}
                     onMouseEnter={e => e.currentTarget.style.color = "#f5e6d3"}
@@ -97,7 +103,7 @@ export default function Footer() {
               Atelier
             </h4>
             <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-              {["Our Story", "The Process", "Sourcing & Ethics", "Awards", "Press"].map(item => (
+              {["My Story", "Courses"].map(item => (
                 <li key={item} style={{ marginBottom: "12px" }}>
                   <a href="#" style={{ color: "#9a7060", fontSize: "14px", textDecoration: "none", transition: "color 0.2s" }}
                     onMouseEnter={e => e.currentTarget.style.color = "#f5e6d3"}
@@ -119,7 +125,7 @@ export default function Footer() {
               <div>Lille, France</div>
              
               <div>
-                <a href="mailto:chocolate@salman.com" style={{ color: "#9a7060", textDecoration: "none", fontSize: "13px" }}>chocolate@salman.com</a>
+                <a href="mailto:salmanfarhat098@gmail.com" style={{ color: "#9a7060", textDecoration: "none", fontSize: "13px" }}>chocolate@salman.com</a>
               </div>
             </address>
           </div>

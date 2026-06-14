@@ -28,3 +28,11 @@ body {
 html {
   scroll-behavior: smooth;
 }
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  min-width: 0;
+}

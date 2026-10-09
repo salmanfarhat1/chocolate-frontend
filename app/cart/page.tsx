@@ -59,7 +59,7 @@ export default function CartPage() {
                           )}
                         </div>
                       )}
-                      <div className="text-lg font-semibold text-[#5a2a27]">${item.price}</div>
+                      <div className="text-lg font-semibold text-[#5a2a27]">€{Number(item.price).toFixed(2)}</div>
                     </div>
                     
                     <div className="flex items-center space-x-3">
@@ -95,16 +95,16 @@ export default function CartPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-[#7a5a53]">Items ({cart.itemCount})</span>
-                  <span className="text-[#5a2a27]">${cart.total.toFixed(2)}</span>
+                  <span className="text-[#5a2a27]">€{cart.total.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#7a5a53]">Shipping</span>
-                  <span className="text-[#5a2a27]">$5.00</span>
+                  <span className="text-[#5a2a27]">€5.00</span>
                 </div>
                 <div className="border-t border-[#e8d5c4] pt-3">
                   <div className="flex justify-between font-bold text-lg">
                     <span className="text-[#5a2a27]">Total</span>
-                    <span className="text-[#5a2a27]">${(cart.total + 5).toFixed(2)}</span>
+                    <span className="text-[#5a2a27]">€{(cart.total + 5).toFixed(2)}</span>
                   </div>
                 </div>
               </div>

@@ -83,6 +83,8 @@ export default function CustomChocolateCreator() {
   const [selectedBase, setSelectedBase] = useState<ChocolateBase | null>(null);
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]);
 
+  const { addItem, isInCart } = useCart();
+
   const handleIngredientToggle = (ingredient: Ingredient) => {
     setSelectedIngredients(prev => {
       const isSelected = prev.some(ing => ing.id === ingredient.id);
@@ -95,6 +97,32 @@ export default function CustomChocolateCreator() {
   const totalPrice =
     (selectedBase?.price || 0) +
     selectedIngredients.reduce((sum, ing) => sum + ing.price, 0);
+
+  // One cart line per unique configuration:
+  // same base + same ingredients (any order) → quantities merge,
+  // a different recipe → its own line item.
+  const cartId = selectedBase
+    ? `custom-${selectedBase.id}-${selectedIngredients
+        .map(ing => ing.id)
+        .sort()
+        .join('-')}`
+    : null;
+
+  const handleAddToCart = () => {
+    if (!selectedBase || !cartId) return;
+
+    addItem({
+      id: cartId,
+      name: `${selectedBase.name} Custom Bar`,
+      price: totalPrice,
+      quantity: 1,
+      type: 'custom',
+      customDetails: {
+        base: selectedBase.name,
+        ingredients: selectedIngredients.map(ing => ing.name),
+      },
+    });
+  };
 
   return (
     <>
@@ -128,7 +156,7 @@ export default function CustomChocolateCreator() {
                       {base.description} · {base.detailDesc}
                     </div>
                   </div>
-                  <div className="base-price">${base.price}</div>
+                  <div className="base-price">€{base.price}</div>
                   <div className="base-check">
                     <div className="base-check-dot" />
                   </div>
@@ -162,7 +190,7 @@ export default function CustomChocolateCreator() {
                     </div>
                     <div className="ing-icon">{ingredient.emoji}</div>
                     <div className="ing-name">{ingredient.name}</div>
-                    <div className="ing-price">+${ingredient.price}</div>
+                    <div className="ing-price">+€{ingredient.price}</div>
                   </button>
                 );
               })}
@@ -226,7 +254,7 @@ export default function CustomChocolateCreator() {
                   {selectedBase && (
                     <div className="summary-row">
                       <span className="summary-row-label">Base — {selectedBase.name}</span>
-                      <span className="summary-row-price">${selectedBase.price}</span>
+                      <span className="summary-row-price">€{selectedBase.price}</span>
                     </div>
                   )}
                   {selectedIngredients.map(ing => (
@@ -234,7 +262,7 @@ export default function CustomChocolateCreator() {
                       <span className="summary-row-label">
                         {ing.emoji} {ing.name}
                       </span>
-                      <span className="summary-row-price">+${ing.price}</span>
+                      <span className="summary-row-price">+€{ing.price}</span>
                     </div>
                   ))}
                 </div>
@@ -242,12 +270,20 @@ export default function CustomChocolateCreator() {
 
               <div className="summary-total">
                 <span className="summary-total-label">Total</span>
-                <span className="summary-total-price">${totalPrice}</span>
+                <span className="summary-total-price">€{totalPrice}</span>
               </div>
             </div>
 
-            <button className="add-btn" disabled={!selectedBase}>
-              {selectedBase ? `Add to Cart — $${totalPrice}` : 'Select a chocolate base first'}
+            <button
+              className="add-btn"
+              disabled={!selectedBase}
+              onClick={handleAddToCart}
+            >
+              {!selectedBase
+                ? 'Select a chocolate base first'
+                : cartId && isInCart(cartId)
+                  ? 'Added to Cart ✓'
+                  : `Add to Cart — €${totalPrice}`}
             </button>
           </div>
         </div>

@@ -11,6 +11,15 @@ type Chocolate = {
   name: string;
   ingredients: string;
   photo_urls: string[];
+  startingPrice?: number | null;
+  minWeight?: number | null;
+};
+
+type Variant = {
+  id: number;
+  chocolate_id: number;
+  weight: number | null;
+  price: number;
 };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
@@ -29,8 +38,44 @@ async function getChocolates(): Promise<Chocolate[]> {
   }
 }
 
+async function getVariants(): Promise<Variant[]> {
+  try {
+    const res = await fetch(backendAPIURI + "variants", { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch variants");
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Error fetching variants:", error);
+    return [];
+  }
+}
+
 export default async function ChocolatesPage() {
-  const chocolates = await getChocolates() ?? [];
+  const [chocolates, variants] = await Promise.all([
+    getChocolates(),
+    getVariants(),
+  ]);
+
+  // Real "from" price + smallest size per chocolate, straight from the variants
+  const variantsByChoco = new Map<number, Variant[]>();
+  for (const v of variants) {
+    const list = variantsByChoco.get(v.chocolate_id) ?? [];
+    list.push(v);
+    variantsByChoco.set(v.chocolate_id, list);
+  }
+
+  const chocolatesWithPrice = chocolates.map((chocolate) => {
+    const list = variantsByChoco.get(chocolate.id) ?? [];
+    const weights = list
+      .map((v) => v.weight)
+      .filter((w): w is number => w != null);
+    return {
+      ...chocolate,
+      startingPrice:
+        list.length > 0 ? Math.min(...list.map((v) => v.price)) : null,
+      minWeight: weights.length > 0 ? Math.min(...weights) : null,
+    };
+  });
   return (
     <div className="min-h-screen bg-[#fdfaf5]">
       <Header />
@@ -42,7 +87,7 @@ export default async function ChocolatesPage() {
         {/* Chocolate Grid */}
         <div className="max-w-7xl mx-auto px-2 sm:px-0">
           <ChocolateGrid
-            chocolates={chocolates}
+            chocolates={chocolatesWithPrice}
             basePhotoUrl={basePhotoUrl}
             showAddToCart={true}
             isClickable={true}

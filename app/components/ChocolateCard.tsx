@@ -9,8 +9,8 @@ type Props = {
   ingredients: string;
   photoUrl: string | null;
   brand?: string;
-  price?: number;
-  quantity?: string;
+  price?: number | null;
+  minWeight?: number | null;
   showAddToCart?: boolean;
   isClickable?: boolean;
 };
@@ -21,8 +21,8 @@ export default function ChocolateCard({
   ingredients,
   photoUrl,
   brand = "Classic Collection",
-  price = 1,
-  quantity = "12 pieces",
+  price = null,
+  minWeight = null,
   showAddToCart = true,
   isClickable = true,
 }: Props) {
@@ -70,10 +70,10 @@ export default function ChocolateCard({
 
         <div className="flex justify-between items-center mb-4">
           <span className="text-lg font-semibold text-[#5a2a27]">
-            ${price}
+            {price != null ? `From €${Number(price).toFixed(2)}` : "—"}
           </span>
           <span className="text-sm text-[#7a5a53]">
-            {quantity}
+            {minWeight != null ? `${Number(minWeight).toFixed(0)} g` : "No variants"}
           </span>
         </div>
 

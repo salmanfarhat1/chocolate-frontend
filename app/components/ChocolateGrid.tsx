@@ -5,6 +5,8 @@ type Chocolate = {
   name: string;
   ingredients: string;
   photo_urls: string[];
+  startingPrice?: number | null;
+  minWeight?: number | null;
 };
 
 type ChocolateGridProps = {
@@ -49,6 +51,8 @@ export default function ChocolateGrid({
             name={chocolate.name}
             ingredients={chocolate.ingredients}
             photoUrl={firstPhotoUrl}
+            price={chocolate.startingPrice}
+            minWeight={chocolate.minWeight}
             showAddToCart={showAddToCart}
             isClickable={isClickable}
           />

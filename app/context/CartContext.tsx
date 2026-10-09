@@ -1,26 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
-// Define types here instead of importing if there are path issues
-type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image?: string;
-  type: 'ready-made' | 'custom';
-  customDetails?: {
-    base: string;
-    ingredients: string[];
-  };
-};
-
-type Cart = {
-  items: CartItem[];
-  total: number;
-  itemCount: number;
-};
+import type { Cart, CartItem } from '../types/cart';
 
 type CartContextType = {
   cart: Cart;
@@ -40,18 +21,32 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     itemCount: 0,
   });
 
-  // Load cart from localStorage on mount
+  // True only after the saved cart has been read from localStorage
+  const [hydrated, setHydrated] = useState(false);
+
+  // Load cart from localStorage on mount (guard against corrupted data)
   useEffect(() => {
-    const savedCart = localStorage.getItem('chocolate-cart');
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
+    try {
+      const savedCart = localStorage.getItem('chocolate-cart');
+      if (savedCart) {
+        const parsed = JSON.parse(savedCart);
+        if (parsed && Array.isArray(parsed.items)) {
+          setCart(parsed);
+        }
+      }
+    } catch {
+      // Broken JSON in localStorage → drop it and start fresh
+      localStorage.removeItem('chocolate-cart');
     }
+    setHydrated(true);
   }, []);
 
-  // Save cart to localStorage whenever it changes
+  // Save cart to localStorage whenever it changes,
+  // but never before hydration so the empty initial state can't wipe a saved cart
   useEffect(() => {
+    if (!hydrated) return;
     localStorage.setItem('chocolate-cart', JSON.stringify(cart));
-  }, [cart]);
+  }, [cart, hydrated]);
 
   const addItem = (item: CartItem) => {
     setCart(prevCart => {
